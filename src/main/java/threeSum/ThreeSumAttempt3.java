@@ -15,15 +15,7 @@ public class ThreeSumAttempt3 implements ThreeSum {
             for (int seenNumber : seenNumbersSet) {
                 int expectedNumber = -seenNumber - currentNumber;
                 if (seenNumbersSet.contains(expectedNumber)) {
-                    if (expectedNumber == seenNumber && expectedNumber == currentNumber) {
-                        //this is the a+a+a = 0 case (aka 0,0,0)
-                        //In order to have a solution, we need to have seen the expected number twice before and this
-                        // will be out third time seeing it (since currentNumber = expectedNumber = seenNumber)
-                        if (seenNumbers.get(expectedNumber) >= 2) {
-                            // but for it to be a solution, it must have been seen at least twice before (this is the 0,0,0 case)
-                            results.add(new Triplet(expectedNumber, seenNumber, currentNumber));
-                        }
-                    } else if (expectedNumber == seenNumber) {
+                    if (expectedNumber == seenNumber) {
                         //We have the a + a + b = 0 case which means we need to see a twice to have a solution
                         //Since we have not registered the current number yet,
                         // if  expectedNumber = currentNumber, => a = currentNumber and since we know
@@ -34,7 +26,10 @@ public class ThreeSumAttempt3 implements ThreeSum {
                             results.add(new Triplet(expectedNumber, seenNumber, currentNumber));
                         }
                     } else {
-                        //each number was seen at least 1 time which is enough
+                        // the expectedNumber number was seen at least once
+                        // the seen number which is different from the expected number was seen at least once
+                        // and the current number is being looked at now
+                        // so we have a complete solution
                         results.add(new Triplet(expectedNumber, seenNumber, currentNumber));
                     }
                 }
@@ -42,7 +37,7 @@ public class ThreeSumAttempt3 implements ThreeSum {
 
             int frequency;
             if (seenNumbers.containsKey(currentNumber)) {
-                frequency = seenNumbers.get(currentNumber) + 1;
+                frequency = 2;//no real reason to count higher than 2
             } else {
                 frequency = 1;
             }
