@@ -10,6 +10,7 @@ public class ThreeSum {
 
         Set<Integer> seenNumbers = new HashSet<>();
         Map<Integer, Set<Tuple>> pendingResults = new HashMap<>();
+        Set<Tuple> solvedTuples = new HashSet<>();
 
         for (int currentNumber : nums) {
             if (pendingResults.containsKey(currentNumber)) {
@@ -17,7 +18,9 @@ public class ThreeSum {
                 Set<Tuple> tuples = pendingResults.get(currentNumber);
                 for (Iterator<Tuple> it = tuples.iterator(); it.hasNext(); ) {
                     Tuple partialResult = it.next();
-                    results.add(partialResult.makeTriplet(currentNumber));
+                    Triplets solution = partialResult.makeTriplet(currentNumber);
+                    results.add(solution);
+                    solvedTuples.addAll(solution.getAllTuples());
                     it.remove();
                 }
             }
@@ -25,13 +28,16 @@ public class ThreeSum {
             for (int seenNumber : seenNumbers) {
                 int expectedNumber = -seenNumber - currentNumber;
                 Set<Tuple> tupleSet;
-                if (pendingResults.containsKey(expectedNumber)) {
-                    tupleSet = pendingResults.get(expectedNumber);
-                    tupleSet.add(new Tuple(seenNumber, currentNumber));
-                } else {
-                    tupleSet = new HashSet<>();
-                    tupleSet.add(new Tuple(seenNumber, currentNumber));
-                    pendingResults.put(expectedNumber, tupleSet);
+                Tuple currentTuple = new Tuple(seenNumber, currentNumber);
+                if (!solvedTuples.contains(currentTuple)) {
+                    if (pendingResults.containsKey(expectedNumber)) {
+                        tupleSet = pendingResults.get(expectedNumber);
+                        tupleSet.add(currentTuple);
+                    } else {
+                        tupleSet = new HashSet<>();
+                        tupleSet.add(currentTuple);
+                        pendingResults.put(expectedNumber, tupleSet);
+                    }
                 }
             }
 
@@ -122,6 +128,10 @@ public class ThreeSum {
         @Override
         public int hashCode() {
             return Objects.hash(size1, size2, size3);
+        }
+
+        public List<Tuple> getAllTuples() {
+            return Arrays.asList(new Tuple(size1, size2), new Tuple(size2, size3), new Tuple(size1, size3));
         }
     }
 }
