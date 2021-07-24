@@ -1,7 +1,5 @@
-package binaryTreePruning;
+package dailies.binaryTreePruning;
 
-import dailies.binaryTreePruning.BinaryTreePruning;
-import dailies.binaryTreePruning.TreeNode;
 import org.junit.jupiter.api.Test;
 
 public abstract class BinaryTreePruningTest {
