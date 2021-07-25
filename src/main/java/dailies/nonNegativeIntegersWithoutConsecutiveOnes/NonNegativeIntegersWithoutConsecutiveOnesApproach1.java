@@ -1,6 +1,16 @@
 package dailies.nonNegativeIntegersWithoutConsecutiveOnes;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NonNegativeIntegersWithoutConsecutiveOnesApproach1 implements NonNegativeIntegersWithoutConsecutiveOnes {
+
+    private Map<Integer, Integer> getNumberOfIntegersWithConsecutiveOnesIntermediaryResults = new HashMap<>();
+
+    public NonNegativeIntegersWithoutConsecutiveOnesApproach1() {
+        getNumberOfIntegersWithConsecutiveOnesIntermediaryResults.put(2, 1);
+        getNumberOfIntegersWithConsecutiveOnesIntermediaryResults.put(3, 3);
+    }
 
     @Override
     public int findIntegers(int n) {
@@ -38,22 +48,20 @@ public class NonNegativeIntegersWithoutConsecutiveOnesApproach1 implements NonNe
     }
 
     public int getNumberOfIntegersWithConsecutiveOnes(int lengthInBinary) {
+
         if (lengthInBinary < 2) {
             return 0;
         }
 
-        if (lengthInBinary == 2) {
-            return 1;
+        if (getNumberOfIntegersWithConsecutiveOnesIntermediaryResults.containsKey(lengthInBinary)) {
+            return getNumberOfIntegersWithConsecutiveOnesIntermediaryResults.get(lengthInBinary);
         }
-
-        if (lengthInBinary == 3) {
-            return 3;
-        }
-
         // all the numbers that start with 11... + all the numbers that start with 0... + all the numbers that start with 10...
-        return (1 << (lengthInBinary - 2)) +
+        int result = (1 << (lengthInBinary - 2)) +
                 getNumberOfIntegersWithConsecutiveOnes(lengthInBinary - 1) +
                 getNumberOfIntegersWithConsecutiveOnes(lengthInBinary - 2);
+        getNumberOfIntegersWithConsecutiveOnesIntermediaryResults.put(lengthInBinary, result);
+        return result;
     }
 
 }
