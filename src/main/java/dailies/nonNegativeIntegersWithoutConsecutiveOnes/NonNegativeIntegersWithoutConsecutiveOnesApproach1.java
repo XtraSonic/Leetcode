@@ -4,7 +4,6 @@ public class NonNegativeIntegersWithoutConsecutiveOnesApproach1 implements NonNe
 
     @Override
     public int findIntegers(int n) {
-
         String numberInBinary = Integer.toBinaryString(n);
         int lengthInBinary = numberInBinary.length();
         int totalNumbers = n + 1;
@@ -22,7 +21,7 @@ public class NonNegativeIntegersWithoutConsecutiveOnesApproach1 implements NonNe
             return numberInBinary.charAt(1) == '1' ? 1 : 0;
         if (numberInBinary.charAt(1) == '1') {
             int originalNumber = Integer.parseInt(numberInBinary, 2);
-            int startOf11 = (int) (Math.pow(2, lengthInBinary - 1) + Math.pow(2, lengthInBinary - 2)); //number 110...
+            int startOf11 = 3 << lengthInBinary - 2; //number 110...
 
             // n has the form 11.... so everything above 110... will be counted(including the number itself) + the numbers  between 100... and 110..
             int numbersStartingWith11 = originalNumber - startOf11 + 1;
@@ -52,9 +51,9 @@ public class NonNegativeIntegersWithoutConsecutiveOnesApproach1 implements NonNe
         }
 
         // all the numbers that start with 11... + all the numbers that start with 0... + all the numbers that start with 10...
-        return (int) (Math.pow(2, (lengthInBinary - 2)) +
+        return (1 << (lengthInBinary - 2)) +
                 getNumberOfIntegersWithConsecutiveOnes(lengthInBinary - 1) +
-                getNumberOfIntegersWithConsecutiveOnes(lengthInBinary - 2));
+                getNumberOfIntegersWithConsecutiveOnes(lengthInBinary - 2);
     }
 
 }
