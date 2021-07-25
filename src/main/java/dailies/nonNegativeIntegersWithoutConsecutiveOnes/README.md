@@ -61,5 +61,10 @@ I realized that I have 2 cases:
 * numbers that start with 11 => we can calculate the amount of numbers that start with 11 + now we have another 2^(x-2)
   -1 question which we already know how to solve
 
-Both these cases seem pretty similar, and I'm sure they can be merged for a more efficient solution, but for the moment,
-I will call them good enough.
+Both these steps (calculating for 0 to 2^x-1 and 2^x to n) seem pretty similar, and I'm sure they can be merged for a
+more efficient solution, but for the moment, I will call them good enough.
+
+A couple of quick time improvements:
+
+* changed Math.pow to bit shifting => it reduced the time from ~2500 ms to ~500 ms
+* introduced a map to store recursion results it reduced the time from ~500 ms to ~9ms, but at some memory cost
