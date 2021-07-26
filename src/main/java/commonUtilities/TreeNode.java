@@ -1,4 +1,4 @@
-package dailies.binaryTreePruning;
+package commonUtilities;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -63,5 +63,21 @@ public class TreeNode {
 
     public void setRight(TreeNode right) {
         this.right = right;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+
+    public int getVal() {
+        return val;
+    }
+
+    public TreeNode getLeft() {
+        return left;
+    }
+
+    public TreeNode getRight() {
+        return right;
     }
 }
