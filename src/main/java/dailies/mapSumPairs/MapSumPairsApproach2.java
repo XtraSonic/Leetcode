@@ -18,7 +18,7 @@ public class MapSumPairsApproach2 implements MapSumPairs {
         return root.sum(prefix);
     }
 
-    class PartialKey {
+    static class PartialKey {
         Map<Character, PartialKey> nextElements;
         int val;
 
@@ -27,31 +27,28 @@ public class MapSumPairsApproach2 implements MapSumPairs {
         }
 
         public void insert(String key, int val) {
-            if (key.isEmpty()) {
-                this.val = val;
-                return;
+            PartialKey current = this;
+            for (char c : key.toCharArray()) {
+                PartialKey next = current.nextElements.get(c);
+                if (next == null) {
+                    next = new PartialKey();
+                    current.nextElements.put(c, next);
+                }
+                current = next;
             }
-            char charKey = key.charAt(0);
-            PartialKey next;
-            if (nextElements.containsKey(charKey)) {
-                next = nextElements.get(charKey);
-            } else {
-                next = new PartialKey();
-            }
-            nextElements.put(charKey, next);
-            next.insert(key.substring(1), val);
+            current.val = val;
         }
 
         public int sum(String prefix) {
-            if (prefix.isEmpty()) {
-                return sum();
+            PartialKey current = this;
+            for (char c : prefix.toCharArray()) {
+                PartialKey next = current.nextElements.get(c);
+                if (next == null) {
+                    return 0;
+                }
+                current = next;
             }
-            char charKey = prefix.charAt(0);
-            if (nextElements.containsKey(charKey)) {
-                return nextElements.get(charKey).sum(prefix.substring(1));
-            } else {
-                return 0;
-            }
+            return current.sum();
         }
 
         public int sum() {
