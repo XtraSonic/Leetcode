@@ -16,14 +16,18 @@ public class TrappingRainWaterApproach3 implements TrappingRainWater {
                 if (leftMax < height[i]) {
                     leftMax = height[i];
                 } else {
-                    total += Math.min(leftMax, rightMax) - height[i];
+                    //since height[i] < height[j], it means height[j] == right max and since left max < height[i]
+                    // => left max is the min between left and right
+                    total += leftMax - height[i];
                 }
             } else {
                 j--;
                 if (rightMax < height[j]) {
                     rightMax = height[j];
                 } else {
-                    total += Math.min(leftMax, rightMax) - height[j];
+                    //since height[i] > height[j], it means height[i] == left max and since right max < height[j]
+                    // => right max is the min between left and right
+                    total += rightMax - height[j];
                 }
             }
         }
