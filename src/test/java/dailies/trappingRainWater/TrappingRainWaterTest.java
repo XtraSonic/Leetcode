@@ -25,7 +25,7 @@ public abstract class TrappingRainWaterTest {
 
     @Test
     void longTest() {
-        trappingRainWater.trap(new int[]{10527, 740, 9013, 1300, 29680, 4898, 13993, 15213, 18182, 24254, 3966, 24378, 11522, 9190,
+        evaluateTrap(130737093, new int[]{10527, 740, 9013, 1300, 29680, 4898, 13993, 15213, 18182, 24254, 3966, 24378, 11522, 9190,
                 6389, 32067, 21464, 7115, 7760, 3925, 31608, 16047, 20117, 239, 14254, 3647, 11664, 27710, 2374, 23076, 5655, 9035, 4725,
                 13013, 12690, 22900, 27252, 32431, 2234, 281, 21614, 25927, 4512, 12695, 23964, 1279, 24305, 10618, 9903, 9943, 21625, 16622,
                 23662, 25734, 1255, 24695, 9120, 29898, 7376, 20450, 31788, 4604, 32502, 29052, 24447, 12007, 30153, 15745, 7726, 28122, 7726,
@@ -68,6 +68,25 @@ public abstract class TrappingRainWaterTest {
 
     }
 
+    @Test
+    void testEmpty() {
+        evaluateTrap(0, new int[]{});
+    }
+
+    @Test
+    void testOneElement() {
+        evaluateTrap(0, new int[]{3});
+    }
+
+    @Test
+    void testTwoElements() {
+        evaluateTrap(0, new int[]{3, 2});
+    }
+
+    @Test
+    void testThreeElements() {
+        evaluateTrap(1, new int[]{3, 2, 4});
+    }
 
     private void evaluateTrap(int expected, int[] height) {
         assertEquals(expected, trappingRainWater.trap(height));
