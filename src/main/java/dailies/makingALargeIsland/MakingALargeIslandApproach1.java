@@ -36,7 +36,6 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
 
         int max = 1;
         for (Island island : islands) {
-            int currentMax = island.ones.size() + 1;
             for (MatrixIndex borderElement : island.border) {
                 if (grid[borderElement.i][borderElement.j] != 0) {
                     continue;
@@ -48,12 +47,9 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
                         labels.add(grid[neighbour.i][neighbour.j]);
                 }
                 int tempMax = labels.stream().map(sizeByLabel::get).reduce(1, Integer::sum);
-                if (currentMax < tempMax) {
-                    currentMax = tempMax;
+                if (max < tempMax) {
+                    max = tempMax;
                 }
-            }
-            if (max < currentMax) {
-                max = currentMax;
             }
         }
 
