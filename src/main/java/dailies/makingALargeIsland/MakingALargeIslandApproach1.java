@@ -33,12 +33,27 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
         if (numberOfIslands == 1 && islands.get(0).ones.size() == nSquared) {
             return nSquared;
         }
-        int max = 1;
 
+        int max = 1;
         for (Island island : islands) {
-            int tempMax = island.potentialMaxSize(sizeByLabel, grid);
-            if (max < tempMax) {
-                max = tempMax;
+            int currentMax = island.ones.size() + 1;
+            for (MatrixIndex borderElement : island.border) {
+                if (grid[borderElement.i][borderElement.j] != 0) {
+                    continue;
+                }
+                grid[borderElement.i][borderElement.j] = -1;
+                Set<Integer> labels = new HashSet<>();
+                for (MatrixIndex neighbour : borderElement.getCardinalNeighbours(grid.length)) {
+                    if (grid[neighbour.i][neighbour.j] > 1)
+                        labels.add(grid[neighbour.i][neighbour.j]);
+                }
+                int tempMax = labels.stream().map(sizeByLabel::get).reduce(1, Integer::sum);
+                if (currentMax < tempMax) {
+                    currentMax = tempMax;
+                }
+            }
+            if (max < currentMax) {
+                max = currentMax;
             }
         }
 
@@ -66,22 +81,6 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
                     border.add(currentIndex);
                 }
             }
-        }
-
-        public int potentialMaxSize(Map<Integer, Integer> sizeByLabel, int[][] grid) {
-            int currentMax = ones.size() + 1;
-            for (MatrixIndex borderElement : border) {
-                Set<Integer> labels = new HashSet<>();
-                for (MatrixIndex neighbour : borderElement.getCardinalNeighbours(grid.length)) {
-                    if (grid[neighbour.i][neighbour.j] > 1)
-                        labels.add(grid[neighbour.i][neighbour.j]);
-                }
-                int tempMax = labels.stream().map(sizeByLabel::get).reduce(1, Integer::sum);
-                if (currentMax < tempMax) {
-                    currentMax = tempMax;
-                }
-            }
-            return currentMax;
         }
     }
 }
