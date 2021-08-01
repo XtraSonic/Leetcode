@@ -11,7 +11,6 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
         List<Island> islands = new ArrayList<>();
         Map<Integer, Integer> sizeByLabel = new HashMap<>();
         int n = grid.length;
-        List<MatrixIndex> listOfZeros = new ArrayList<>();
 
         int currentLabel = 2;
         for (int i = 0; i < n; i++) {
@@ -19,18 +18,14 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
                 if (grid[i][j] == 1) {
                     Island island = new Island(grid, new MatrixIndex(i, j), currentLabel);
                     islands.add(island);
-                    sizeByLabel.put(currentLabel++, island.ones.size());
+                    sizeByLabel.put(currentLabel++, island.size);
                 }
-                if (grid[i][j] == 0) {
-                    listOfZeros.add(new MatrixIndex(i, j));
-                }
-
             }
         }
 
         int nSquared = n * n;
         int numberOfIslands = islands.size();
-        if (numberOfIslands == 1 && islands.get(0).ones.size() == nSquared) {
+        if (numberOfIslands == 1 && islands.get(0).size == nSquared) {
             return nSquared;
         }
 
@@ -57,11 +52,11 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
     }
 
     static class Island {
-        List<MatrixIndex> ones;
+        int size;
         List<MatrixIndex> border;
 
         Island(int[][] grid, MatrixIndex start, int label) {
-            ones = new ArrayList<>();
+            size = 0;
             border = new ArrayList<>();
             int n = grid.length;
             Queue<MatrixIndex> queue = new LinkedList<>();
@@ -70,7 +65,7 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
                 MatrixIndex currentIndex = queue.poll();
                 if (grid[currentIndex.i][currentIndex.j] == 1) {
                     grid[currentIndex.i][currentIndex.j] = label;
-                    ones.add(currentIndex);
+                    size++;
                     queue.addAll(currentIndex.getCardinalNeighbours(n));
                 }
                 if (grid[currentIndex.i][currentIndex.j] == 0) {
