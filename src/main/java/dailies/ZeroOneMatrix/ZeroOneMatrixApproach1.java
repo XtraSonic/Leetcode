@@ -1,5 +1,7 @@
 package dailies.zeroOneMatrix;
 
+import commonUtilities.MatrixIndex;
+
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -54,15 +56,5 @@ public class ZeroOneMatrixApproach1 implements ZeroOneMatrix {
 
         }
         return mat;
-    }
-
-    private static class MatrixIndex {
-        int i;
-        int j;
-
-        public MatrixIndex(int i, int j) {
-            this.i = i;
-            this.j = j;
-        }
     }
 }
