@@ -6,6 +6,8 @@ public class MakingALargeIslandApproach3 implements MakingALargeIsland {
     @Override
     public int largestIsland(int[][] grid) {
         int n = grid.length;
+        if (n == 1)
+            return 1;
         int[] sizeByLabel = new int[n * n];
         sizeByLabel[0] = 0;
         int currentLabel = 2;
