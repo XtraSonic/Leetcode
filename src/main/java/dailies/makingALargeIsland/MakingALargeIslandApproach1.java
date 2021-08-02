@@ -8,7 +8,7 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
 
     @Override
     public int largestIsland(int[][] grid) {
-        List<Island> islands = new ArrayList<>();
+        List<MatrixIndex> listOfZeros = new ArrayList<>();
         Map<Integer, Integer> sizeByLabel = new HashMap<>();
         int n = grid.length;
 
@@ -17,47 +17,37 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
             for (int j = 0; j < n; j++) {
                 if (grid[i][j] == 1) {
                     Island island = new Island(grid, new MatrixIndex(i, j), currentLabel);
-                    islands.add(island);
                     sizeByLabel.put(currentLabel++, island.size);
                 }
+                if (grid[i][j] == 0) {
+                    listOfZeros.add(new MatrixIndex(i, j));
+                }
             }
         }
 
-        int nSquared = n * n;
-        int numberOfIslands = islands.size();
-        if (numberOfIslands == 1 && islands.get(0).size == nSquared) {
-            return nSquared;
-        }
-
+        boolean atLeastOneZero = false;
         int max = 1;
-        for (Island island : islands) {
-            for (MatrixIndex borderElement : island.border) {
-                if (grid[borderElement.i][borderElement.j] != 0) {
-                    continue;
-                }
-                grid[borderElement.i][borderElement.j] = -1;
-                Set<Integer> labels = new HashSet<>();
-                for (MatrixIndex neighbour : borderElement.getCardinalNeighbours(grid.length)) {
-                    if (grid[neighbour.i][neighbour.j] > 1)
-                        labels.add(grid[neighbour.i][neighbour.j]);
-                }
-                int tempMax = labels.stream().map(sizeByLabel::get).reduce(1, Integer::sum);
-                if (max < tempMax) {
-                    max = tempMax;
-                }
+        for (MatrixIndex borderElement : listOfZeros) {
+            atLeastOneZero = true;
+            Set<Integer> labels = new HashSet<>();
+            for (MatrixIndex neighbour : borderElement.getCardinalNeighbours(grid.length)) {
+                if (grid[neighbour.i][neighbour.j] > 1)
+                    labels.add(grid[neighbour.i][neighbour.j]);
+            }
+            int tempMax = labels.stream().map(sizeByLabel::get).reduce(1, Integer::sum);
+            if (max < tempMax) {
+                max = tempMax;
             }
         }
 
-        return max;
+        return atLeastOneZero ? max : n * n;
     }
 
     static class Island {
         int size;
-        List<MatrixIndex> border;
 
         Island(int[][] grid, MatrixIndex start, int label) {
             size = 0;
-            border = new ArrayList<>();
             int n = grid.length;
             Queue<MatrixIndex> queue = new LinkedList<>();
             queue.add(start);
@@ -67,9 +57,6 @@ public class MakingALargeIslandApproach1 implements MakingALargeIsland {
                     grid[currentIndex.i][currentIndex.j] = label;
                     size++;
                     queue.addAll(currentIndex.getCardinalNeighbours(n));
-                }
-                if (grid[currentIndex.i][currentIndex.j] == 0) {
-                    border.add(currentIndex);
                 }
             }
         }
