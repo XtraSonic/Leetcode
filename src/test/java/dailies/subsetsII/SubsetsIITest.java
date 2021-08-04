@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.jupiter.api.Assertions.fail;
+import static utilities.TestUtils.compareListsOutOfOrder;
 
 
 public abstract class SubsetsIITest {
@@ -74,31 +74,6 @@ public abstract class SubsetsIITest {
     }
 
     private void evaluateSubsetsII(List<List<Integer>> expected, int[] nums) {
-        compareLists(expected, subsetsII.subsetsWithDup(nums));
+        compareListsOutOfOrder(expected, subsetsII.subsetsWithDup(nums));
     }
-
-    public void compareLists(List<List<Integer>> expected, List<List<Integer>> actual) {
-        if (expected.size() != actual.size()) {
-            fail("Lists have different sizes: \nexpected=" + expected + "\nactual=" + actual);
-        }
-        actual.forEach(element -> {
-            if (!isIncludedInList(element, expected))
-                fail("B contains the element " + element + " which is not present in A: \nexpected=" + expected + "\nactual=" + actual);
-        });
-
-        expected.forEach(element -> {
-            if (!isIncludedInList(element, actual))
-                fail("A contains the element " + element + " which is not present in B: \nexpected=" + expected + "\nactual=" + actual);
-        });
-    }
-
-    public boolean isIncludedInList(List<Integer> toFind, List<List<Integer>> list) {
-        return list.stream().anyMatch(element -> areTheSame(toFind, element));
-    }
-
-    public boolean areTheSame(List<Integer> a, List<Integer> b) {
-        return a.size() == b.size() && a.containsAll(b) && b.containsAll(a);
-    }
-
-
 }
