@@ -4,70 +4,42 @@ package mergeIntervals;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 
 public class MergeIntervalsApproach1 implements MergeIntervals {
 
     @Override
     public int[][] merge(int[][] intervals) {
-        List<Interval> disjointIntervals = new ArrayList<>();
+        List<int[]> disjointIntervals = new ArrayList<>();
 
-        for (int[] interval : intervals) {
-            Interval currentInterval = new Interval(interval[0], interval[1]);
-            for (Iterator<Interval> it = disjointIntervals.iterator(); it.hasNext(); ) {
-                Interval seenInterval = it.next();
-                if (seenInterval.canIntervalsBeMerged(currentInterval)) {
-                    currentInterval = seenInterval.mergeIntervals(currentInterval);
+        for (int[] currentInterval : intervals) {
+            boolean shouldAdd = true;
+            for (Iterator<int[]> it = disjointIntervals.iterator(); it.hasNext(); ) {
+                int[] seenInterval = it.next();
+                if (seenInterval[0] <= currentInterval[0] && currentInterval[1] <= seenInterval[1]) {
+                    shouldAdd = false;
+                    break;
+                }
+                if (currentInterval[0] <= seenInterval[0] && seenInterval[1] <= currentInterval[1]) {
+                    it.remove();
+                    continue;
+                }
+                if (currentInterval[0] <= seenInterval[0] && seenInterval[0] <= currentInterval[1]) {
+                    currentInterval = new int[]{currentInterval[0], seenInterval[1]};
+                    it.remove();
+                    continue;
+                }
+                if (currentInterval[0] <= seenInterval[1] && seenInterval[1] <= currentInterval[1]) {
+
+                    currentInterval = new int[]{seenInterval[0], currentInterval[1]};
                     it.remove();
                 }
             }
-            disjointIntervals.add(currentInterval);
+            if (shouldAdd) {
+                disjointIntervals.add(currentInterval);
+            }
         }
 
-        return disjointIntervals.stream().map(Interval::toArray).toArray(int[][]::new);
-    }
-
-    private static class Interval {
-        int start;
-        int finish;
-
-        public Interval(int start, int finish) {
-            this.start = start;
-            this.finish = finish;
-        }
-
-        boolean isInClosedInterval(int number) {
-            return start <= number && number <= finish;
-        }
-
-        boolean isInsideInterval(Interval other) {
-            return other.start <= start && other.finish >= finish;
-        }
-
-        boolean canIntervalsBeMerged(Interval other) {
-            return isInsideInterval(other) || other.isInsideInterval(this) || isInClosedInterval(other.start) || isInClosedInterval(other.finish);
-        }
-
-        Interval mergeIntervals(Interval other) {
-            return new Interval(Math.min(start, other.start), Math.max(finish, other.finish));
-        }
-
-        int[] toArray() {
-            return new int[]{start, finish};
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Interval interval = (Interval) o;
-            return start == interval.start && finish == interval.finish;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(start, finish);
-        }
+        return disjointIntervals.toArray(int[][]::new);
     }
 
 
