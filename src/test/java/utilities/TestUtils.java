@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestUtils {
 
-    public static void compareListsOutOfOrder(List<List<Integer>> expected, List<List<Integer>> actual) {
+    public static <T> void compareListsOutOfOrder(List<List<T>> expected, List<List<T>> actual) {
         if (expected.size() != actual.size()) {
             fail("Lists have different sizes: \nexpected=" + expected + "\nactual=" + actual);
         }
@@ -21,19 +21,19 @@ public class TestUtils {
         });
     }
 
-    public static boolean isIncludedInListInOrder(List<Integer> toFind, List<List<Integer>> list) {
+    public static <T> boolean isIncludedInListInOrder(List<T> toFind, List<List<T>> list) {
         return list.stream().anyMatch(toFind::equals);
     }
 
-    public static boolean isIncludedInListOutOfOrder(List<Integer> toFind, List<List<Integer>> list) {
+    public static <T> boolean isIncludedInListOutOfOrder(List<T> toFind, List<List<T>> list) {
         return list.stream().anyMatch(element -> areTheSameOutOfOrder(toFind, element));
     }
 
-    public static boolean areTheSameOutOfOrder(List<Integer> a, List<Integer> b) {
+    public static <T> boolean areTheSameOutOfOrder(List<T> a, List<T> b) {
         return a.size() == b.size() && a.containsAll(b) && b.containsAll(a);
     }
 
-    public static void compareListsWithInOrderElements(List<List<Integer>> expected, List<List<Integer>> actual) {
+    public static <T> void compareListsWithInOrderElements(List<List<T>> expected, List<List<T>> actual) {
         if (expected.size() != actual.size()) {
             fail("Lists have different sizes: \nexpected=" + expected + "\nactual=" + actual);
         }
