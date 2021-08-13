@@ -51,6 +51,35 @@ public abstract class SetMatrixZerosTest {
         });
     }
 
+    @Test
+    void testNegativeNumbers() {
+
+        evaluateSetZeros(new int[][]{
+                {1, 0, 0, 3},
+                {0, 0, 0, 0},
+                {0, 0, 0, 0},
+                {1, 0, 0, -5}
+        }, new int[][]{
+                {1, 1, 2, 3},
+                {3, 0, 5, 2},
+                {3, 4, 0, 2},
+                {1, 3, 1, -5}
+        });
+    }
+
+    @Test
+    void testFirstColumnShouldNotBeZero() {
+        evaluateSetZeros(new int[][]{
+                {0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0},
+                {2147483647, 2, -9, -6, 0}
+        }, new int[][]{
+                {-4, -2147483648, 6, -7, 0},
+                {-8, 6, -8, -6, 0},
+                {2147483647, 2, -9, -6, -10}
+        });
+    }
+
     private void evaluateSetZeros(int[][] expected, int[][] matrix) {
         System.out.println("orig:" + Arrays.deepToString(matrix));
         setMatrixZeros.setZeroes(matrix);
