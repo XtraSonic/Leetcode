@@ -1,7 +1,5 @@
 package dailies.setMatrixZeros;
 
-import java.util.Arrays;
-
 public class SetMatrixZerosApproach2 implements SetMatrixZeros {
     @Override
     public void setZeroes(int[][] matrix) {
@@ -24,6 +22,10 @@ public class SetMatrixZerosApproach2 implements SetMatrixZeros {
                 for (int j = 1; j < matrix[0].length; j++) {
                     matrix[i][j] = 0;
                 }
+            } else {
+                if (firstColumnShouldBeZero) {
+                    matrix[i][0] = 0;
+                }
             }
         }
         for (int j = 1; j < matrix[0].length; j++) {
@@ -31,15 +33,14 @@ public class SetMatrixZerosApproach2 implements SetMatrixZeros {
                 for (int i = 1; i < matrix.length; i++) {
                     matrix[i][j] = 0;
                 }
+            } else {
+                if (firstLineShouldBeZero) {
+                    matrix[0][j] = 0;
+                }
             }
         }
-        if (firstLineShouldBeZero) {
-            Arrays.fill(matrix[0], 0);
-        }
-        if (firstColumnShouldBeZero) {
-            for (int i = 0; i < matrix.length; i++) {
-                matrix[i][0] = 0;
-            }
+        if (firstLineShouldBeZero || firstColumnShouldBeZero) {
+            matrix[0][0] = 0;
         }
     }
 }
