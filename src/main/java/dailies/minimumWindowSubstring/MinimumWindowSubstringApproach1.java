@@ -6,38 +6,32 @@ public class MinimumWindowSubstringApproach1 implements MinimumWindowSubstring {
 
     @Override
     public String minWindow(String s, String t) {
-        HashMap<Character, Integer> charsToFind = new HashMap<>();
-        HashMap<Character, Integer> charsFound = new HashMap<>();
+        HashMap<Character, Integer> extraCharsBetweenStartAndFinish = new HashMap<>();
         for (char c : t.toCharArray()) {
-            charsToFind.put(c, charsToFind.getOrDefault(c, 0) + 1);
-            charsFound.put(c, charsFound.getOrDefault(c, 0) - 1);
+            extraCharsBetweenStartAndFinish.put(c, extraCharsBetweenStartAndFinish.getOrDefault(c, 0) - 1);
         }
+        int differentCharsToFind = extraCharsBetweenStartAndFinish.size();
 
-        //find one char fist
+        // first find one char of t in s
         int startIndex = 0;
-        while (startIndex < s.length() && !charsToFind.containsKey(s.charAt(startIndex))) startIndex++;
+        while (startIndex < s.length() && !extraCharsBetweenStartAndFinish.containsKey(s.charAt(startIndex)))
+            startIndex++;
 
         //find all the chars of t in s starting from the start index
         int finishIndex = startIndex;
-        while (finishIndex < s.length() && !charsToFind.isEmpty()) {
+        while (finishIndex < s.length() && differentCharsToFind != 0) {
             char currentChar = s.charAt(finishIndex++);
-            if (charsToFind.containsKey(currentChar)) {
-                charsFound.put(currentChar, charsFound.getOrDefault(currentChar, 0) + 1);
-                int numberOfCharactersLeftToFind = charsToFind.get(currentChar) - 1;
-                if (numberOfCharactersLeftToFind == 0) {
-                    charsToFind.remove(currentChar);
-                } else {
-                    charsToFind.put(currentChar, numberOfCharactersLeftToFind);
-                }
-            } else {
-                if (charsFound.containsKey(currentChar)) {
-                    charsFound.put(currentChar, charsFound.get(currentChar) + 1);
+            if (extraCharsBetweenStartAndFinish.containsKey(currentChar)) {
+                int newAmountOfExtraChars = extraCharsBetweenStartAndFinish.get(currentChar) + 1;
+                extraCharsBetweenStartAndFinish.put(currentChar, newAmountOfExtraChars);
+                if (newAmountOfExtraChars == 0) {
+                    differentCharsToFind--;
                 }
             }
         }
 
         //if we did not find all the chars of t at this point, we don't have a solution
-        if (!charsToFind.isEmpty())
+        if (differentCharsToFind != 0)
             return "";
 
         //otherwise, we have our first possible solution
@@ -50,9 +44,9 @@ public class MinimumWindowSubstringApproach1 implements MinimumWindowSubstring {
         while (startIndex <= maxStartIndex) {
             char currentStartChar = s.charAt(startIndex);
             startIndex++;
-            if (charsFound.containsKey(currentStartChar)) {
-                int extraStartCharactersInTheInterval = charsFound.get(currentStartChar) - 1;
-                charsFound.put(currentStartChar, extraStartCharactersInTheInterval);
+            if (extraCharsBetweenStartAndFinish.containsKey(currentStartChar)) {
+                int extraStartCharactersInTheInterval = extraCharsBetweenStartAndFinish.get(currentStartChar) - 1;
+                extraCharsBetweenStartAndFinish.put(currentStartChar, extraStartCharactersInTheInterval);
                 if (extraStartCharactersInTheInterval < 0) {
                     // if we do not have the start character in our current interval,
                     // we need to find it by incrementing the end
@@ -65,8 +59,8 @@ public class MinimumWindowSubstringApproach1 implements MinimumWindowSubstring {
                         currentEndChar = s.charAt(finishIndex);
 
                         //since the interval is growing, we need to add relevant characters to the solution
-                        if (charsFound.containsKey(currentEndChar)) {
-                            charsFound.put(currentEndChar, charsFound.get(currentEndChar) + 1);
+                        if (extraCharsBetweenStartAndFinish.containsKey(currentEndChar)) {
+                            extraCharsBetweenStartAndFinish.put(currentEndChar, extraCharsBetweenStartAndFinish.get(currentEndChar) + 1);
                         }
 
                         finishIndex++;
@@ -74,7 +68,8 @@ public class MinimumWindowSubstringApproach1 implements MinimumWindowSubstring {
                 }
 
                 // now we can eliminate from the start all the chars that are not part of t
-                while (startIndex <= maxStartIndex && !charsFound.containsKey(s.charAt(startIndex))) startIndex++;
+                while (startIndex <= maxStartIndex && !extraCharsBetweenStartAndFinish.containsKey(s.charAt(startIndex)))
+                    startIndex++;
 
                 if (startIndex > maxStartIndex) {
                     //we cannot have another solution
