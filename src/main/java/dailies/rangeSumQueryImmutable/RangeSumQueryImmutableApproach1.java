@@ -20,8 +20,9 @@ public class RangeSumQueryImmutableApproach1 implements RangeSumQueryImmutable {
 
     @Override
     public void setArray(int[] nums) {
-        precomputedTable = new int[nums.length][nums.length];
+        precomputedTable = new int[nums.length][];
         for (int i = 0; i < nums.length; i++) {
+            precomputedTable[i] = new int[i + 1];
             precomputedTable[i][i] = nums[i];
             for (int j = i - 1; j >= 0; j--) {
                 precomputedTable[i][j] = precomputedTable[i - 1][j] + nums[i];
