@@ -1,5 +1,7 @@
 package dailies.decodeWays;
 
+import java.util.HashMap;
+
 public class DecodeWaysApproach1 implements DecodeWays {
 
     @Override
@@ -35,10 +37,17 @@ public class DecodeWaysApproach1 implements DecodeWays {
         return totalPossibilities;
     }
 
+
+    private HashMap<Integer, Long> partialNumberOfTwoConsecutiveOnes = new HashMap<>();
+
     private long getNumberOfTwoConsecutiveOnes(int numberOfBits) {
         if (numberOfBits < 2) {
             return 0;
         }
-        return getNumberOfTwoConsecutiveOnes(numberOfBits - 1) + (1L << (numberOfBits - 2)) + getNumberOfTwoConsecutiveOnes(numberOfBits - 2);
+        if (partialNumberOfTwoConsecutiveOnes.containsKey(numberOfBits))
+            return partialNumberOfTwoConsecutiveOnes.get(numberOfBits);
+        long result = getNumberOfTwoConsecutiveOnes(numberOfBits - 1) + (1L << (numberOfBits - 2)) + getNumberOfTwoConsecutiveOnes(numberOfBits - 2);
+        partialNumberOfTwoConsecutiveOnes.put(numberOfBits, result);
+        return result;
     }
 }
