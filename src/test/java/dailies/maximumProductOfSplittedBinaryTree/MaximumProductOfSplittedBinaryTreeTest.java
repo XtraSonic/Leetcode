@@ -28,6 +28,11 @@ public abstract class MaximumProductOfSplittedBinaryTreeTest {
         evaluateMaximumProductOfSplittedBinaryTree(1, new Integer[]{1, 1});
     }
 
+    @Test
+    void testModuloWorks() {
+        evaluateMaximumProductOfSplittedBinaryTree(1, new Integer[]{2, 500000004});
+    }
+
     private void evaluateMaximumProductOfSplittedBinaryTree(int expected, Integer[] integers) {
         assertEquals(expected, maximumProductOfSplittedBinaryTree.maxProduct(TreeNode.createFromArray(integers)));
     }
