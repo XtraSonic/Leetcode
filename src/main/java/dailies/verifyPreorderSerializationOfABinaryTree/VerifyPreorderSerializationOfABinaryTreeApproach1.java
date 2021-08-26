@@ -5,14 +5,17 @@ public class VerifyPreorderSerializationOfABinaryTreeApproach1 implements Verify
     @Override
     public boolean isValidSerialization(String preorder) {
         int expectedNumberOfHashtags = 1;
-        String[] chars = preorder.split(",");
-        for (int i = 0; i < chars.length; i++) {
-            String character = chars[i];
-            if (character.equals("#")) {
+        for (int i = 0; i < preorder.length(); i++) {
+            char character = preorder.charAt(i);
+            if (character == '#') {
                 expectedNumberOfHashtags--;
+                i++;// "read" the next comma
             } else {
                 if (expectedNumberOfHashtags > 0) {
                     expectedNumberOfHashtags++;
+                    do {
+                        i++;// "read" the whole number
+                    } while (preorder.charAt(i) != ',');
                 } else {
                     return false;
                 }
