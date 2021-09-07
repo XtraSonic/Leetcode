@@ -1,5 +1,7 @@
 package addTwoNumbers;
 
+import commonUtilities.ListNode;
+
 public class AddTwoNumbersApproach1 implements AddTwoNumbers {
     @Override
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
