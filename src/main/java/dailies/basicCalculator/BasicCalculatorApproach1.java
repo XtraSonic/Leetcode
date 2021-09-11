@@ -29,17 +29,18 @@ public class BasicCalculatorApproach1 implements BasicCalculator {
                 case ')':
                     shouldInvert = shouldInvertStack.pop();
                     break;
-            }
-            if (currentChar >= '0' && currentChar <= '9') {
-                int currentNumber = currentChar - '0';
-                while (i + 1 < s.length() && s.charAt(i + 1) >= '0' && s.charAt(i + 1) <= '9') {
-                    currentNumber = currentNumber * 10 + s.charAt(++i) - '0';
-                }
-                if (add) {
-                    result += currentNumber;
-                } else {
-                    result -= currentNumber;
-                }
+                default:
+                    if (Character.isDigit(currentChar)) {
+                        int currentNumber = currentChar - '0';
+                        while (i + 1 < s.length() && Character.isDigit(s.charAt(i + 1))) {
+                            currentNumber = currentNumber * 10 + s.charAt(++i) - '0';
+                        }
+                        if (add) {
+                            result += currentNumber;
+                        } else {
+                            result -= currentNumber;
+                        }
+                    }
             }
         }
         return result;
