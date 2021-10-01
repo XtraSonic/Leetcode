@@ -32,4 +32,19 @@ public abstract class LongestCommonSubsequenceTest {
     void testLongTest() {
         assertEquals(103, longestCommonSubsequence.longestCommonSubsequence("axbcasdubiasdufaudshfawsfgdycakvyfgvchuygqaiwfcakhjyfgcasdbfgyfgsudasdfjbasdiufhajdsfgiauswfbdjkadsydez", "axbcasdubiasdufaudshfawsfgdycakvyfgvchuygqaiwfcakhjyfgcasdbfgyfgsudasdfjbasdiufhajdsfgiauswfbdjkadsydez"));
     }
+
+    @Test
+    void testAIncludedTwiceInB() {
+        assertEquals(2, longestCommonSubsequence.longestCommonSubsequence("zaf", "ffaafffaffff"));
+    }
+
+    @Test
+    void testBIncludedTwiceInA() {
+        assertEquals(2, longestCommonSubsequence.longestCommonSubsequence("ffaafffaffff", "zaf"));
+    }
+
+    @Test
+    void testABB() {
+        assertEquals(1, longestCommonSubsequence.longestCommonSubsequence("xabb", "zbaa"));
+    }
 }
